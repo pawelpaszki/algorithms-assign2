@@ -42,7 +42,8 @@ Required methods states in the assignment specification were following:
 They all have been implemented. Some with modifications, ie:
 
 - addUser(...) is called register(...)
-- removeUser(userID) - deleteYourAccount() (makes sense to delete your account only)
+- deleteOtherAccount(userID) - admin can remove any user but himself
+- deleteYourAccount() (makes sense to delete your account only, unless you are an admin)
 - getUserRatings()
 - getUserRecommendations(userID) -> getYourRecommendations()
 - load() - load in the MovieRecommender; loadSavedDatabase() in the Main class
