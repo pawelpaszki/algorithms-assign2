@@ -1,7 +1,7 @@
 # algorithms-assign2
 This project is the second assignment in Algorithms - programming module in second year Applied Computing course. 
 
-The main aims of this assignment is to write a Java program that can:
+The main aims of this assignment were to write a Java program that can:
 
 - Load existing movie, user and rating data into a Java program.
 - Develop a suitable data serializer.
@@ -75,9 +75,10 @@ and their content is formatted appropriately)
 When it comes to serialization. Currently XML serialization is used, but JSON Serializer is tested and in working condition. 
 it can be easily used by changing those two lines of code:
 
-    File dataStore = new File("datastore.xml");
-		serializer = new XMLSerializer(dataStore);
-		
-		into those:
-		File dataStore = new File("datastore.json");
-		serializer = new JSONSerializer(dataStore);
+File dataStore = new File("datastore.xml");
+serializer = new XMLSerializer(dataStore);
+
+into those:
+
+File dataStore = new File("datastore.json");
+serializer = new JSONSerializer(dataStore);
