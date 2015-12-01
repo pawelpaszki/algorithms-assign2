@@ -112,7 +112,7 @@ public class Main {
 	 * if there is a logged in user - its data is removed
 	 */
 	@Command(description = "Delete your account")
-	public void DeleteYourAccount() {
+	public void deleteYourAccount() {
 		if (recommender.isLoggedIn()) {
 			if (!(recommender.getLoggedInID() == 0l)) {
 				recommender.removeUser(recommender.getLoggedInID());
@@ -124,6 +124,21 @@ public class Main {
 		}
 	}
 
+	/**
+	 * an admin can delete any other account
+	 */
+	@Command(description = "Delete other")
+	public void deleteOtherAccount(@Param(name = "id") Long id) {
+		if (recommender.isLoggedIn() && recommender.getLoggedInID() == 0l) {
+			if (id != 0l && recommender.getUsersIndices().containsKey(id)) {
+				recommender.removeUser(id);
+			} else {
+				System.out.println("Deleting account failed");
+			}
+		} else {
+			System.out.println("Only authorized users can remove accounts");
+		}
+	}
 	/**
 	 * 
 	 * @param title
