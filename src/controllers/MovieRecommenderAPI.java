@@ -20,19 +20,18 @@ import utils.Serializer;
 
 /**
  * 
- * @author Pawel Paszki
- * This class contains all methods used to deal with User, Movie and Rating
- * classes
+ * @author Pawel Paszki This class contains all methods used to deal with User,
+ *         Movie and Rating classes
  */
 
 public class MovieRecommenderAPI {
 
 	// userID, User
-	private Map<Long, User> usersIndices = new TreeMap<Long, User>(); 
+	private Map<Long, User> usersIndices = new TreeMap<Long, User>();
 	// userEmail, User
 	private Map<String, User> usersEmails = new HashMap<String, User>();
 	// movieID, Movie
-	private Map<Long, Movie> movies = new TreeMap<Long, Movie>(); 
+	private Map<Long, Movie> movies = new TreeMap<Long, Movie>();
 	private Serializer serializer;
 	private boolean loggedIn;
 	private Long loggedInID;
@@ -40,7 +39,9 @@ public class MovieRecommenderAPI {
 
 	/**
 	 * constructor of RecommenderAPI class
-	 * @param serializer passed as a parameter
+	 * 
+	 * @param serializer
+	 *            passed as a parameter
 	 */
 	public MovieRecommenderAPI(Serializer serializer) {
 		this.serializer = serializer;
@@ -52,15 +53,15 @@ public class MovieRecommenderAPI {
 	}
 
 	/**
-	 * this method instantiates admin, who is the only user, which can clear 
-	 * the database
+	 * this method instantiates admin, who is the only user, which can clear the
+	 * database
 	 */
 	private void instantiateAdmin() {
 		admin = new User(0l, "Pawel", "Paszki", 30, "male", "student", "pawelpaszki@gmail.com", "secret");
 		usersIndices.put(admin.getId(), admin);
 		usersEmails.put(admin.getEmail(), admin);
 	}
-	
+
 	/**
 	 * 
 	 * @param firstName
@@ -69,11 +70,14 @@ public class MovieRecommenderAPI {
 	 * @param gender
 	 * @param occupation
 	 * @param email
-	 * @param password passed to create new user (email parameter is validated in Client class in terms of 
-	 * its correct format and to make sure, that there is no user with this email in the database). 
-	 * if there are no users id is set to 1l. Otherwise to avoid overriding existing users in the map
-	 * id is set to the last's user id incremented by 1.
-	 * Users are stored in two maps for lookup convenience. 
+	 * @param password
+	 *            passed to create new user (email parameter is validated in
+	 *            Client class in terms of its correct format and to make sure,
+	 *            that there is no user with this email in the database). if
+	 *            there are no users id is set to 1l. Otherwise to avoid
+	 *            overriding existing users in the map id is set to the last's
+	 *            user id incremented by 1. Users are stored in two maps for
+	 *            lookup convenience.
 	 */
 	public void addUser(String firstName, String lastName, int age, String gender, String occupation, String email,
 			String password) {
@@ -97,11 +101,14 @@ public class MovieRecommenderAPI {
 	 * @param gender
 	 * @param occupation
 	 * @param email
-	 * @param password passed to create new user (email parameter is validated in Client class in terms of 
-	 * its correct format and to make sure, that there is no user with this email in the database). 
-	 * if there are no users id is set to 1l. Otherwise to avoid overriding existing users in the map
-	 * id is set to the last's user id incremented by 1.
-	 * Users are stored in two maps for lookup convenience. 
+	 * @param password
+	 *            passed to create new user (email parameter is validated in
+	 *            Client class in terms of its correct format and to make sure,
+	 *            that there is no user with this email in the database). if
+	 *            there are no users id is set to 1l. Otherwise to avoid
+	 *            overriding existing users in the map id is set to the last's
+	 *            user id incremented by 1. Users are stored in two maps for
+	 *            lookup convenience.
 	 */
 	public void addUser(Long id, String firstName, String lastName, int age, String gender, String occupation,
 			String email, String password) {
@@ -119,8 +126,9 @@ public class MovieRecommenderAPI {
 
 	/**
 	 * 
-	 * @param userID (which is currently logged in User) passed to remove
-	 * a User with given id from the database
+	 * @param userID
+	 *            (which is currently logged in User) passed to remove a User
+	 *            with given id from the database
 	 * @return
 	 */
 	public User removeUser(long userID) {
@@ -131,7 +139,9 @@ public class MovieRecommenderAPI {
 				movie.getRatings().remove(user.getId()); // removing user's
 															// ratings
 			}
-			logout();
+			if (getLoggedInID() != 0l) {
+				logout();
+			}
 			return user;
 		} else {
 			return null;
@@ -141,9 +151,10 @@ public class MovieRecommenderAPI {
 	/**
 	 * 
 	 * @param title
-	 * @param year (validated in Client class)
-	 * @param url are passed
-	 * new Movie object is created and put into movies map
+	 * @param year
+	 *            (validated in Client class)
+	 * @param url
+	 *            are passed new Movie object is created and put into movies map
 	 */
 	public void addMovie(String title, String year, String url) {
 		Long id;
@@ -158,11 +169,13 @@ public class MovieRecommenderAPI {
 
 	/**
 	 * 
-	 * @param userID (logged in user id)
-	 * @param movieID 
-	 * @param note (validated in Client class)
-	 * are passed in order to add Rating, which will be stored in user's 
-	 * Ratings and movie's ratings maps
+	 * @param userID
+	 *            (logged in user id)
+	 * @param movieID
+	 * @param note
+	 *            (validated in Client class) are passed in order to add Rating,
+	 *            which will be stored in user's Ratings and movie's ratings
+	 *            maps
 	 */
 	public void addRating(long userID, long movieID, int note) {
 		// slight change - spec says 'int rating'
@@ -173,7 +186,8 @@ public class MovieRecommenderAPI {
 
 	/**
 	 * 
-	 * @param movieID passed in order to get info about movie
+	 * @param movieID
+	 *            passed in order to get info about movie
 	 * @return Movie, if exists, null otherwise
 	 */
 	public Movie getMovie(long movieID) {
@@ -187,7 +201,8 @@ public class MovieRecommenderAPI {
 
 	/**
 	 * 
-	 * @param userID passed 
+	 * @param userID
+	 *            passed
 	 * @return user's ratings
 	 */
 	public Map<Long, Rating> getUserRatings(long userID) {
@@ -196,14 +211,15 @@ public class MovieRecommenderAPI {
 
 	/**
 	 * 
-	 * @param userID is passed in order to get his / her recommendations
-	 * @return null, if user has not rated any movies yet, otherwise
-	 * compares user's ratings with each other user's ratings and 
-	 * finds the best match - ie the highest dot product of user's ratings.
-	 * if "the best match" user does not have any other movies rated other 
-	 * than those compared with user with given id, then topTen movies are 
-	 * returned, otherwise list of movies rated by the compared user and not 
-	 * rated by the user with given id is returned
+	 * @param userID
+	 *            is passed in order to get his / her recommendations
+	 * @return null, if user has not rated any movies yet, otherwise compares
+	 *         user's ratings with each other user's ratings and finds the best
+	 *         match - ie the highest dot product of user's ratings. if
+	 *         "the best match" user does not have any other movies rated other
+	 *         than those compared with user with given id, then topTen movies
+	 *         are returned, otherwise list of movies rated by the compared user
+	 *         and not rated by the user with given id is returned
 	 */
 	public ArrayList<Movie> getUserRecommendations(long userID) {
 		if (!(usersIndices.get(userID).getRatings().size() == 0)) {
@@ -238,10 +254,11 @@ public class MovieRecommenderAPI {
 
 	/**
 	 * 
-	 * @return List of the movies with the highest notes. MergeX sort 
-	 * is used to sort the list and then sublist of those movies is created. 
-	 * by getting the 10 movies at the far end, which have the highest notes. 
-	 * if there are no more than 10 movies stored in the movies map - 
+	 * @return List of the movies with the highest notes. MergeX sort is used to
+	 *         sort the list and then sublist of those movies is created. by
+	 *         getting the 10 movies at the far end, which have the highest
+	 *         notes. if there are no more than 10 movies stored in the movies
+	 *         map -
 	 */
 	public List<Movie> getTopTenMovies() {
 		List<Movie> movieList = new ArrayList<Movie>(movies.values());
@@ -259,6 +276,7 @@ public class MovieRecommenderAPI {
 
 	/**
 	 * reads the serialized data
+	 * 
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
@@ -272,6 +290,7 @@ public class MovieRecommenderAPI {
 
 	/**
 	 * writes data to the external file
+	 * 
 	 * @throws Exception
 	 */
 	public void write() throws Exception {
@@ -282,9 +301,11 @@ public class MovieRecommenderAPI {
 	}
 
 	/**
-	 * Loads data from hardcoded .dat files, if they exist and puts that data
-	 * to collections of Users and Movies. 
-	 * @throws Exception if the files don't exist
+	 * Loads data from hardcoded .dat files, if they exist and puts that data to
+	 * collections of Users and Movies.
+	 * 
+	 * @throws Exception
+	 *             if the files don't exist
 	 */
 	public void prime() throws Exception {
 		CSVLoader loader = new CSVLoader();
@@ -306,9 +327,11 @@ public class MovieRecommenderAPI {
 	}
 
 	/**
-	 * Loads data from hardcoded .dat files, if they exist and puts that data
-	 * to collections of Users and Movies. 
-	 * @throws Exception if the files don't exist
+	 * Loads data from hardcoded .dat files, if they exist and puts that data to
+	 * collections of Users and Movies.
+	 * 
+	 * @throws Exception
+	 *             if the files don't exist
 	 */
 	public void prime(String usersPath, String moviesPath, String genresPath, String ratingsPath) throws Exception {
 		CSVLoader loader = new CSVLoader();
@@ -328,11 +351,13 @@ public class MovieRecommenderAPI {
 		}
 		instantiateAdmin();
 	}
-	
+
 	/**
 	 * 
-	 * @param title is passed
-	 * @return map of titles, whose title contains title specified as a parameter
+	 * @param title
+	 *            is passed
+	 * @return map of titles, whose title contains title specified as a
+	 *         parameter
 	 */
 	public TreeMap<Long, Movie> findMovie(String title) {
 		TreeMap<Long, Movie> titles = new TreeMap<Long, Movie>();
@@ -368,9 +393,10 @@ public class MovieRecommenderAPI {
 	/**
 	 * 
 	 * @param email
-	 * @param password are passed
-	 * @return true, if login was successful, false otherwise
-	 * when true - loggedIn id is set to the id of user with specified params
+	 * @param password
+	 *            are passed
+	 * @return true, if login was successful, false otherwise when true -
+	 *         loggedIn id is set to the id of user with specified params
 	 */
 	public boolean login(String email, String password) {
 		if (usersEmails.containsKey(email)) {
