@@ -28,7 +28,7 @@ public class CSVLoaderTest {
 		loader = null;
 	}
 
-	@Test // ORDERING CARDINALITY RIGHT
+	@Test // ORDERING - CARDINALITY - RIGHT
 	public void testMovies() throws Exception {
 		List<Movie> movies = loader.loadMovies("data_movieLens/items.dat", "data_movieLens/genres.dat");
 		assertNotNull(movies);
@@ -44,7 +44,7 @@ public class CSVLoaderTest {
 		assertNull(movies);
 	}
 	
-	@Test // RIGHT ORDERING CARDINALITY
+	@Test // RIGHT - ORDERING - CARDINALITY
 	public void testUsers() throws Exception {
 		List<User> users = loader.loadUsers("data_movieLens/users.dat");
 		assertNotNull(users);
@@ -62,7 +62,7 @@ public class CSVLoaderTest {
 		assertNull(users);
 	}
 	
-	@Test // RIGHT 
+	@Test // RIGHT - EXISTENCE
 	public void testRatings() throws Exception {
 		List<Rating> ratings = loader.loadRatings("data_movieLens/ratings.dat");
 		assertNotNull(ratings);

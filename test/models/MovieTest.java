@@ -131,7 +131,7 @@ public class MovieTest {
 		assertEquals(1, movie1.compareTo(movie2));
 	}
 
-	@Test
+	@Test // RIGHT
 	public void testToString() {
 		assertTrue(movie1.toString().equals(movie1.getTitle() + " (not rated yet)"));
 		movie1.getRatings().put(rating1.getUserID(), rating1);

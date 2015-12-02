@@ -78,7 +78,7 @@ public class MovieRecommenderAPITest {
 		assertTrue(rating3 != null);
 	}
 
-	@Test
+	@Test // EXISTENCE
 	public void testAddUser() {
 		assertEquals(1, recommender.getUsersEmails().size()); // size is 1 because of the admin account
 		recommender.addUser(user1.getFirstName(), user1.getLastName(), user1.getAge(), user1.getGender(),
@@ -140,7 +140,7 @@ public class MovieRecommenderAPITest {
 	public void testGetUserRatings() {
 		recommender.addUser(user1.getFirstName(), user1.getLastName(), user1.getAge(), user1.getGender(),
 				user1.getOccupation(), user1.getEmail(), user1.getPassword());
-		assertEquals(0, recommender.getUserRatings(user1.getId()).size()); // CARDINALITY (admin account)
+		assertEquals(0, recommender.getUserRatings(user1.getId()).size()); // CARDINALITY
 		recommender.addMovie(movie1.getTitle(), movie1.getYear(), movie1.getUrl());
 		recommender.addMovie(movie2.getTitle(), movie2.getYear(), movie2.getUrl());
 		recommender.addMovie(movie3.getTitle(), movie3.getYear(), movie3.getUrl());

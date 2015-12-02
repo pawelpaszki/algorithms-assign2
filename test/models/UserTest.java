@@ -161,7 +161,7 @@ public class UserTest {
 		assertTrue(user1.getRatings().size() == 0);
 	}
 
-	@Test
+	@Test // RIGHT
 	public void testToString() {
 		user1.getRatings().put(1l, rating1);
 		user1.getRatings().put(2l, rating2);

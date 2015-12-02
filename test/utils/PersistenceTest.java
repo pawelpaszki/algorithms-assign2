@@ -18,7 +18,7 @@ public class PersistenceTest {
 		recommender.prime("testData/users.dat", "testData/items.dat", "testData/genres.dat", "testData/ratings.dat");
 	}
 
-	@Test // EXISTANCE RIGHT CROSS-CHECK
+	@Test // EXISTANCE - RIGHT - CROSS-CHECK
 	public void testPopulate() throws Exception {
 		recommender = new MovieRecommenderAPI(null);
 		assertEquals(1, recommender.getUsersIndices().size()); // admin account
@@ -40,7 +40,7 @@ public class PersistenceTest {
 		}
 	}
 
-	@Test
+	@Test // RIGHT
 	public void testJSONSerializer() throws Exception {
 		String datastoreFile = "testdatastore.json";
 		deleteFile(datastoreFile);
@@ -61,7 +61,7 @@ public class PersistenceTest {
 		deleteFile("testdatastore.json");
 	}
 	
-	@Test
+	@Test // RIGHT
 	public void testXMLSerializer() throws Exception {
 		String datastoreFile = "testdatastore.xml";
 		deleteFile(datastoreFile);
