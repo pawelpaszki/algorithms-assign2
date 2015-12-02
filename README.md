@@ -83,3 +83,5 @@ into those:
 
 File dataStore = new File("datastore.json");
 serializer = new JSONSerializer(dataStore);
+
+More info in javadocs in the code
