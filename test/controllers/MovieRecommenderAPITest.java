@@ -80,18 +80,18 @@ public class MovieRecommenderAPITest {
 
 	@Test
 	public void testAddUser() {
-		assertEquals(0, recommender.getUsersEmails().size());
+		assertEquals(1, recommender.getUsersEmails().size()); // size is 1 because of the admin account
 		recommender.addUser(user1.getFirstName(), user1.getLastName(), user1.getAge(), user1.getGender(),
 				user1.getOccupation(), user1.getEmail(), user1.getPassword());
 		recommender.addUser(user2.getFirstName(), user2.getLastName(), user2.getAge(), user2.getGender(),
 				user2.getOccupation(), user2.getEmail(), user2.getPassword());
-		assertEquals(2, recommender.getUsersEmails().size()); // CARDINALITY
+		assertEquals(3, recommender.getUsersEmails().size()); // CARDINALITY - 2 users + admin
 		assertTrue(recommender.getUsersEmails().size() == recommender.getUsersIndices().size()); // CROSS-CHECK
 	}
 
 	@Test(expected = Exception.class)
 	public void addUserWithInvalidAttributes() {
-		assertEquals(0, recommender.getUsersEmails().size());
+		assertEquals(1, recommender.getUsersEmails().size()); // admin account
 		// invalid age, id and gender
 		recommender.addUser(-1l, "Bob", "Bobs", 150, "unspecified", "student", "student@gmail.com", "secret");
 		assertTrue(recommender.getUsersIndices().get(-1l) == null); // default id assigned, ie 1l
@@ -107,19 +107,19 @@ public class MovieRecommenderAPITest {
 		
 		recommender = null;
 	}
-
+	
 	@Test
 	public void testRemoveUser() {
 		recommender.addUser(user1.getFirstName(), user1.getLastName(), user1.getAge(), user1.getGender(),
 				user1.getOccupation(), user1.getEmail(), user1.getPassword());
-		assertEquals(1, recommender.getUsersEmails().size()); // CARDINALITY
+		assertEquals(2, recommender.getUsersEmails().size()); // CARDINALITY (one user + admin)
 		recommender.login(user1.getEmail(), user1.getPassword());
 		assertEquals(recommender.getLoggedInID(), user1.getId());
 		recommender.removeUser(user1.getId());
-		assertEquals(0, recommender.getUsersEmails().size()); // CARDINALITY
+		assertEquals(1, recommender.getUsersEmails().size()); // CARDINALITY
 		assertFalse(recommender.isLoggedIn()); 
 	}
-
+	
 	@Test
 	public void testAddAndGetMovieAndAddRating() {
 		assertTrue(recommender.getMovies() != null); // EXISTENCE
@@ -135,12 +135,12 @@ public class MovieRecommenderAPITest {
 		assertEquals(1, recommender.getUsersIndices().get(user1.getId()).getRatings().size()); // CARDINALITY
 		assertEquals(5, recommender.getUsersIndices().get(user1.getId()).getRatings().get(movie1.getId()).getNote()); // RIGHT
 	}
-
+	
 	@Test
 	public void testGetUserRatings() {
 		recommender.addUser(user1.getFirstName(), user1.getLastName(), user1.getAge(), user1.getGender(),
 				user1.getOccupation(), user1.getEmail(), user1.getPassword());
-		assertEquals(0, recommender.getUserRatings(user1.getId()).size()); // CARDINALITY
+		assertEquals(0, recommender.getUserRatings(user1.getId()).size()); // CARDINALITY (admin account)
 		recommender.addMovie(movie1.getTitle(), movie1.getYear(), movie1.getUrl());
 		recommender.addMovie(movie2.getTitle(), movie2.getYear(), movie2.getUrl());
 		recommender.addMovie(movie3.getTitle(), movie3.getYear(), movie3.getUrl());
@@ -225,7 +225,7 @@ public class MovieRecommenderAPITest {
 		// best match for Paddy in terms of similarity
 		assertEquals(5, recommender.getUserRecommendations(recommender.getUsersIndices().get(4l).getId()).size());
 	}
-
+	
 	@Test
 	public void testGetTopTenMoviesAndPerformance() {
 		int[] ratings = {-5,-3,-1,1,3,5};
@@ -237,7 +237,7 @@ public class MovieRecommenderAPITest {
 			}
 		}
 		assertTrue(recommender.getMovies().size() == 1000);
-		assertTrue(recommender.getUsersIndices().size() == 100);
+		assertTrue(recommender.getUsersIndices().size() == 100 + 1); // + admin account
 		
 		for(long i = 1; i <= 100; i++) {
 			for(long j = 1; j <=1000; j++) {
@@ -271,13 +271,13 @@ public class MovieRecommenderAPITest {
 	@Test
 	public void testPrime() throws Exception {
 		assertTrue(recommender.getMovies().size() == 0); 
-		assertTrue(recommender.getUsersIndices().size() == 0);
-		assertTrue(recommender.getUsersEmails().size() == 0);
+		assertTrue(recommender.getUsersIndices().size() == 1); 
+		assertTrue(recommender.getUsersEmails().size() == 1); // admin account
 		recommender.prime();
 		assertFalse(recommender.getMovies().size() == 0);
-		assertFalse(recommender.getUsersIndices().size() == 0);
-		assertFalse(recommender.getUsersEmails().size() == 0);
-		assertEquals(943, recommender.getUsersIndices().size());
+		assertFalse(recommender.getUsersIndices().size() == 1);
+		assertFalse(recommender.getUsersEmails().size() == 1);
+		assertEquals(943 + 1, recommender.getUsersIndices().size()); // admin account
 		assertTrue(recommender.getUsersEmails().size() == recommender.getUsersIndices().size());
 		assertEquals(1682, recommender.getMovies().size());
 	}

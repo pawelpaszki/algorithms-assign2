@@ -56,7 +56,7 @@ public class MovieRecommenderAPI {
 	 * this method instantiates admin, who is the only user, which can clear the
 	 * database
 	 */
-	private void instantiateAdmin() {
+	void instantiateAdmin() {
 		admin = new User(0l, "Pawel", "Paszki", 30, "male", "student", "pawelpaszki@gmail.com", "secret");
 		usersIndices.put(admin.getId(), admin);
 		usersEmails.put(admin.getEmail(), admin);
@@ -222,7 +222,7 @@ public class MovieRecommenderAPI {
 	 *         and not rated by the user with given id is returned
 	 */
 	public ArrayList<Movie> getUserRecommendations(long userID) {
-		if (!(usersIndices.get(userID).getRatings().size() == 0)) {
+		if (!(usersIndices.get(userID).getRatings().size() == 0) && usersIndices.size() > 1) {
 			Map<Long, Integer> dotProducts = new HashMap<Long, Integer>();
 			ArrayList<Movie> recommendations = new ArrayList<Movie>();
 			for (User user : usersIndices.values()) {
@@ -268,9 +268,13 @@ public class MovieRecommenderAPI {
 			Collections.reverse(topTen);
 			return topTen;
 		} else {
-			MergeX.sort(movieList);
-			Collections.reverse(movieList);
-			return movieList;
+			if (movieList.size() > 0) {
+				MergeX.sort(movieList);
+				Collections.reverse(movieList);
+				return movieList;
+			} else {
+				return null;
+			}
 		}
 	}
 
@@ -281,11 +285,11 @@ public class MovieRecommenderAPI {
 	 */
 	@SuppressWarnings("unchecked")
 	public void load() throws Exception {
+
 		serializer.read();
 		movies = (Map<Long, Movie>) serializer.pop();
 		usersEmails = (Map<String, User>) serializer.pop();
 		usersIndices = (Map<Long, User>) serializer.pop();
-		instantiateAdmin();
 	}
 
 	/**

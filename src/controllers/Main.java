@@ -45,6 +45,7 @@ public class Main {
 				System.out.println("The database could not be loaded");
 			}
 		}
+		recommender.instantiateAdmin();
 
 	}
 
@@ -177,7 +178,7 @@ public class Main {
 			if (Validator.isValidRating(note) && recommender.getMovies().containsKey(movieId)) {
 				recommender.addRating(recommender.getLoggedInID(), movieId, note);
 			} else {
-				System.out.println("Adding a rating failed. Incorrect rating value");
+				System.out.println("Adding a rating failed. Incorrect rating value or no movie with given id");
 			}
 		} else {
 			displayWarning();
@@ -250,7 +251,7 @@ public class Main {
 	public void getYourRecommendations() {
 		if (recommender.isLoggedIn()) {
 			long id = recommender.getLoggedInID();
-			if (recommender.getUserRecommendations(id) != null) {
+			if (recommender.getUserRecommendations(id) != null && recommender.getUserRecommendations(id).size() > 0) {
 				System.out.println("User's recommendations: ");
 				for (Movie movie : recommender.getUserRecommendations(id)) {
 					System.out.println(movie.getTitle());
@@ -270,7 +271,7 @@ public class Main {
 	@Command(description = "Get top ten movies")
 	public void getTopTenMovies() {
 		List<Movie> topTen = recommender.getTopTenMovies();
-		if (topTen.size() != 0) {
+		if (topTen != null && topTen.size() != 0) {
 			System.out.println("You may find these movies interesting:");
 			for (Movie movie : topTen) {
 				System.out.println(movie.getTitle() + " (" + movie.getNote() + ")");
@@ -379,6 +380,7 @@ public class Main {
 		if (recommender.isLoggedIn() && recommender.getLoggedInID() == 0l) {
 			try {
 				recommender.load();
+				recommender.instantiateAdmin();
 			} catch (Exception e) {
 				System.out.println("The database could not be loaded");
 			}
