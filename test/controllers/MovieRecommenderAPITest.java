@@ -221,8 +221,8 @@ public class MovieRecommenderAPITest {
 		// there are no recommendations for Ronan
 		assertEquals(0, recommender.getUserRecommendations(recommender.getUsersIndices().get(3l).getId()).size());
 		// recommendations for Michael contain all movies from Clodagh list
-		// which Paddy has not rated, because Clodagh's ratings are the
-		// best match for Paddy in terms of similarity
+		// which Michael has not rated, because Clodagh's ratings are the
+		// best match for Michael in terms of similarity
 		assertEquals(5, recommender.getUserRecommendations(recommender.getUsersIndices().get(4l).getId()).size());
 	}
 	

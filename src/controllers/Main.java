@@ -31,7 +31,7 @@ public class Main {
 	 * @throws Exception
 	 *             and prints the appropriate info, if there is no consistency
 	 *             between the Classes data structure and the file content is
-	 *             not
+	 *             not structured in a desired way
 	 */
 	public Main() {
 		File dataStore = new File("datastore.xml");
