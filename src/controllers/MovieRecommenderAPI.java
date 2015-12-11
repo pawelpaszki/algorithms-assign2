@@ -258,7 +258,8 @@ public class MovieRecommenderAPI {
 	 *         sort the list and then sublist of those movies is created. by
 	 *         getting the 10 movies at the far end, which have the highest
 	 *         notes. if there are no more than 10 movies stored in the movies
-	 *         map -
+	 *         map - they are being sorted and returned as a List. if there are
+	 *         no movies - null is returned
 	 */
 	public List<Movie> getTopTenMovies() {
 		List<Movie> movieList = new ArrayList<Movie>(movies.values());
